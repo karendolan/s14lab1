@@ -1,3 +1,7 @@
+# ----------------------
+# Karen Dolan lab2
+# CSCI S-14a 2020
+# ----------------------
 from flask import Flask, render_template, request
 from sklearn.externals import joblib
 
@@ -26,6 +30,7 @@ modelDict = {
 }
 
 
+# lab2 - retrieve model package
 def getModel(modelId):
     model = modelDict[modelId]
     if not model['model']:
@@ -33,9 +38,9 @@ def getModel(modelId):
     return model
 
 
+# lab2 - perform prediction
 def doPrediction(test, model):
     # Some models reqired ravelled y values
-    app.logger.warning('Predicting with %s', model['name'])
     try:
         prediction = model['model'].predict(test)[0][0].round(2)
     except IndexError:
@@ -46,18 +51,16 @@ def doPrediction(test, model):
             'value': str(prediction)
     }
 
-
+# from lab2 -  form posts back
 @app.route("/", methods=['GET', 'POST'])
 def index():
     if request.form:
-        app.logger.warning('Request form exists,  %s', request.form)
         features = request.form
         try:
             modelId = request.form['model']
         except KeyError:
             modelId = 'dt'
     else:
-        app.logger.warning('Request form does not exist,  %s', request.form)
         features = {
             'beds': 4,
             'baths': 2.5,
@@ -88,12 +91,12 @@ def index():
         f=features
      )
 
-
+# from lab1
 @app.route('/world')
 def hello_world():
     return 'Hello, World!'
 
-
+# from lab1
 @app.route('/<you>')
 def hello_you(you):
     return f'Hello, {you}!'

@@ -1,16 +1,50 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lab 1</title>
+{% extends "base.html" %}
+{% block title %}Predictions{% endblock %}
 
-    <!-- Styles -->
-    <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet">
-</head>
-<body>
-<h1>Hello, {{ bCE }}!</h1>
-</body>
-</html>
+{% block content %}
+<h1>Predict Real Estate Price</h1>
+<!--
+# features = ['BEDS', 'BATHS', 'SQFT', 'AGE', 'LOTSIZE', 'GARAGE']
+samplePredict = [[4, 2.5, 3005, 15, 17903.0, 1]]
+-->
+<form action="/" method="POST" role="form">
+  <div class="form-row">
+    <!-- Inputs -->
+    <div class="form-group col-md-2">
+      <label for="beds">Beds</label>
+      <input type="number" min="0" class="form-control" id="beds" name="beds" value="{{f.beds}}">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="baths">Baths</label>
+      <input type="number" min="0" step="0.25" class="form-control" id="baths" name="baths" value="{{f.baths}}">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="sqft">Sqft</label>
+      <input type="number" min="0" step="0.01" class="form-control" id="sqft" name="sqft" value="{{f.sqft}}">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="age">Age</label>
+      <input type="number" min="0" step="0.01" class="form-control" id="age" name="age" value="{{f.age}}">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="lotsize">Lotsize</label>
+      <input type="number" min="0" step="0.01" class="form-control" id="lotsize" name="lotsize" value="{{f.lotsize}}">
+    </div>
+    <div class="form-group col-md-2">
+      <label for="garage">Garage</label>
+      <input type="number" min="0" class="form-control" id="garage" name="garage" value="{{f.garage}}">
+    </div>
+  </div>
+  <!-- choose model -->
+  <div class="form-group row">
+    <label for="model" class="col-sm-2 col-form-label">Choose Model:</label>
+    <select class="custom-select col-sm-6" id="model" name="model">
+      {% for m in models %}
+      <option selected={{m.id == prediction.id}} value="{{m.id}}">{{m.name}}</option>
+      {% endfor %}
+    </select>
+    <button class="btn btn-success col-sm-2" type="submit">Predict</button>
+  </div>
+</form>
+<h3 class="mt-5">Prediction for {{prediction.name}}: {{prediction.value}}</h3>
+{% endblock %}
