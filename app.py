@@ -3,7 +3,8 @@
 # CSCI S-14a 2020
 # ----------------------
 from flask import Flask, render_template, request
-from sklearn.externals import joblib
+# from sklearn.externals import joblib
+import joblib
 
 app = Flask(__name__)
 
