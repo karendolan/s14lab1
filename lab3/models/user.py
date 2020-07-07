@@ -13,4 +13,4 @@ class User(Db.Model):
 
     # toString
     def toString(self):
-        print(f"{self.user_id}: {self.first_name} ({self.age})")
+        print("{self.user_id}: {self.first_name} ({self.age})")

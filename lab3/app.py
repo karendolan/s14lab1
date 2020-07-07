@@ -18,11 +18,10 @@ Db.init_app(app)
 def index():
     # Query all
     users = User.query.all()
-
     # Iterate and print
     for user in users:
-        User.tostring(user)
-        return render_template("index.html")
+        User.toString(user)
+    return render_template("index.html", users=users)
 
 
 # @route /adduser - GET, POST
