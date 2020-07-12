@@ -71,6 +71,35 @@ def removeUserFromUrl(user_id):
     db.session.commit()
     return redirect(url_for('index'))
 
+
+# @route /updateuser/<user_id> - GET, POST
+@app.route('/updateuser/<user_id>', methods=['GET', 'POST'])
+def updateUser(user_id):
+    user = User.query.get_or_404(
+        user_id,
+        description='There is no User with user_id {}'.format(user_id)
+    )
+    form = UserForm()
+    # If GET
+    if request.method == 'GET':
+        #form.age = user.age
+        #form.first_name = user.first_name
+        return render_template('updateuser.html', form=form, user=user)
+    # If POST
+    else:
+        if form.validate_on_submit():
+            first_name = request.form['first_name']
+            age = request.form['age']
+            return redirect(url_for(
+                'updateUserFromUrl',
+                user_id=user_id,
+                first_name=first_name,
+                age=age
+            ))
+        else:
+            return render_template('updateuser.html', form=form, user=user)
+
+
 # @route /adduser/<first_name>/<age>
 @app.route('/updateuser/<user_id>/<first_name>/<age>')
 def updateUserFromUrl(user_id, first_name, age):
@@ -81,7 +110,7 @@ def updateUserFromUrl(user_id, first_name, age):
     return redirect(url_for('index'))
 
 
-# @route /adduser/<first_name>/<age>
+# @route /generateusers/<count>
 @app.route('/generateusers/<count>')
 def randomGenerateUsers(count):
     if(not count.isnumeric()):

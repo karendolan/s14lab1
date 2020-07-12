@@ -8,4 +8,31 @@
     {{user.user_id}}: {{user.first_name}} {{user.age}}
   </div>
 {% endfor %}
+<div class="d-inline-flex mt-3">
+  <!-- Add User Route -->
+  <a class="btn btn-primary"
+     href="{{ url_for('addUser') }}"
+     role="button">Add User
+  </a>
+  <!-- Delete User Route links -->
+  <div class="dropdown">
+   <button class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">
+    Delete User
+   </button>
+   <div class="dropdown-menu"
+       aria-labelledby="dropdownMenuButton">
+    {% for user in users %}
+    <a class="dropdown-item"
+       href="{{ url_for('removeUserFromUrl', user_id=user.user_id) }}">
+        Delete {{user.user_id}}
+    </a>
+    {% endfor %}
+   </div>
+ </div>
+</div>
 {% endblock %}
