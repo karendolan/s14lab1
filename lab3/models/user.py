@@ -1,15 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
 
 # Create DB instance
-Db = SQLAlchemy()
+db = SQLAlchemy()
 
 
-class User(Db.Model):
+class User(db.Model):
     # Fields
     __tablename__ = 'users'
-    user_id = Db.Column(Db.Integer, primary_key=True, autoincrement=True)
-    first_name = Db.Column(Db.String(64), nullable=False)
-    age = Db.Column(Db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    first_name = db.Column(db.String(64), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
 
     # toString
     def toString(self):
