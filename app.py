@@ -1,103 +1,95 @@
 # ----------------------
-# Karen Dolan lab2
+# Karen Dolan lab3
 # CSCI S-14a 2020
 # ----------------------
-from flask import Flask, render_template, request
-# from sklearn.externals import joblib
-import joblib
+from flask import Flask, render_template, request, redirect, url_for
+from models.user import db, User
+from modules.userform import UserForm
+# https://pypi.org/project/names/
+import names
+import random
+
+from flask_heroku import Heroku
 
 app = Flask(__name__)
-
-# Model import constants
-modelDict = {
-  'lr': {
-    'name': 'Linear Regression (normalized inputs)',
-    'path': './lab2/notebooks/regr.pkl',
-    'model': None,
-    'id': 'lr',
-  },
-  'rg': {
-    'name': 'Ridge Regression',
-    'path': './lab2/notebooks/reg_ridge_hw1.pkl',
-    'model': None,
-    'id': 'rg',
-  },
-  'dt': {
-    'name': 'Decision Tree',
-    'path': './lab2/notebooks/reg_decisiontreereg_hw1.pkl',
-    'model': None,
-    'id': 'dt',
-  }
-}
+heroku = Heroku(app)
+#app = Flask(__name__)
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/usersdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://jmtzhzdmwytcvu:cab47fd3a7c281d058994c0682321ce0b613c1fc41078174f235e5e9a9f5efde@ec2-34-239-241-25.compute-1.amazonaws.com:5432/d4795eqpl9o1kb'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = "s14a-key"
+db.init_app(app)
 
 
-# lab2 - retrieve model package
-def getModel(modelId):
-    model = modelDict[modelId]
-    if not model['model']:
-        model['model'] = joblib.load(model['path'])
-    return model
-
-
-# lab2 - perform prediction
-def doPrediction(test, model):
-    # Some models reqired ravelled y values
-    try:
-        prediction = model['model'].predict(test)[0][0].round(2)
-    except IndexError:
-        prediction = model['model'].predict(test)[0].round(2)
-    return {
-            'id': model['id'],
-            'name': model['name'],
-            'value': str(prediction)
-    }
-
-# from lab2 -  form posts back
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    if request.form:
-        features = request.form
-        try:
-            modelId = request.form['model']
-        except KeyError:
-            modelId = 'dt'
+    # Query all
+    users = User.query.all()
+    # Iterate and print
+    for user in users:
+        User.toString(user)
+    return render_template("index.html", users=users)
+
+
+# @route /adduser - GET, POST
+@app.route('/adduser', methods=['GET', 'POST'])
+def addUser():
+    form = UserForm()
+    # If GET
+    if request.method == 'GET':
+        return render_template('adduser.html', form=form)
+    # If POST
     else:
-        features = {
-            'beds': 4,
-            'baths': 2.5,
-            'sqft': 3005,
-            'age': 15,
-            'lotsize': 17903.0,
-            'garage': 1,
-        }
-        modelId = 'dt'
-    # Make prediction -
-    #  features = ['BEDS', 'BATHS', 'SQFT', 'AGE', 'LOTSIZE', 'GARAGE']
-    # samplePredict = [[4, 2.5, 3005, 15, 17903.0, 1]]
-    predictVector = [[
-        float(features['beds']),
-        float(features['baths']),
-        float(features['sqft']),
-        float(features['age']),
-        float(features['lotsize']),
-        float(features['garage'])
-    ]]
-    # modelId
-    model = getModel(modelId)
-    prediction = doPrediction(predictVector, model)
-    return render_template(
-        'index.html',
-        prediction=prediction,
-        models=modelDict.values(),
-        f=features
-     )
+        if form.validate_on_submit():
+            first_name = request.form['first_name']
+            age = request.form['age']
+            new_user = User(first_name=first_name, age=age)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('index'))
+        else:
+            return render_template('adduser.html', form=form)
 
-# from lab1
-@app.route('/world')
-def hello_world():
-    return 'Hello, World!'
 
-# from lab1
-@app.route('/<you>')
-def hello_you(you):
-    return f'Hello, {you}!'
+# @route /adduser/<first_name>/<age>
+@app.route('/adduser/<first_name>/<age>')
+def addUserFromUrl(first_name, age):
+    db.session.add(User(first_name=first_name, age=age))
+    db.session.commit()
+    return redirect(url_for('index'))
+
+# @route /removeuser/<id>
+@app.route('/removeuser/<user_id>')
+def removeUserFromUrl(user_id):
+    # Query user
+    user = User.query.get_or_404(
+        user_id,
+        description='There is no User with user_id {}'.format(user_id)
+    )
+    # Delete user
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+# @route /adduser/<first_name>/<age>
+@app.route('/updateuser/<user_id>/<first_name>/<age>')
+def updateUserFromUrl(user_id, first_name, age):
+    db.session.query(User).\
+        filter(User.user_id==user_id).\
+        update({"age":age, "first_name": first_name})
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
+# @route /adduser/<first_name>/<age>
+@app.route('/generateusers/<count>')
+def randomGenerateUsers(count):
+    if(not count.isnumeric()):
+        return redirect(url_for('index'))
+
+    for x in range(0, int(count)):
+        first_name = names.get_first_name()
+        age = random.randint(0, 140)
+        db.session.add(User(first_name=first_name, age=age))
+        db.session.commit()
+    return redirect(url_for('index'))
