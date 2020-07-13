@@ -26,8 +26,7 @@ def index():
     # Query all
     users = User.query.all()
     # Iterate and print
-    for user in users:
-        User.toString(user)
+    users.sort(key=lambda u: u.user_id)
     return render_template("index.html", users=users)
 
 
@@ -80,6 +79,8 @@ def updateUser(user_id):
         description='There is no User with user_id {}'.format(user_id)
     )
     form = UserForm()
+    form.age.data = user.age
+    form.first_name.data = user.first_name
     # If GET
     if request.method == 'GET':
         #form.age = user.age

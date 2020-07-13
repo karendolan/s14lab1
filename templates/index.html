@@ -3,17 +3,62 @@
 
 {% block content %}
 <h1>Users</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Age</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
 {% for user in users %}
-  <div>
-    {{user.user_id}}: {{user.first_name}} {{user.age}}
-  </div>
+  <tr>
+    <th scope="row">{{user.user_id}}</th>
+    <td>{{user.first_name}}</td>
+    <td>{{user.age}}yrs</td>
+    <td>
+    <a class="btn btn-success btn-sm"
+       href="{{ url_for('updateUser', user_id=user.user_id) }}">
+     <i class="fas fa-user-edit"></i> Update
+    </a>
+    <a class="btn btn-danger btn-sm"
+       href="{{ url_for('removeUserFromUrl', user_id=user.user_id) }}">
+     <i class="fas fa-trash"></i> Delete
+   </a>
+ </td>
+  </tr>
 {% endfor %}
+</tbody>
+</table>
+
 <div class="d-inline-flex mt-3">
   <!-- Add User Route -->
   <a class="btn btn-primary"
      href="{{ url_for('addUser') }}"
      role="button">Add User
   </a>
+  <!-- Update User Route links -->
+  <div class="dropdown">
+   <button class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false">
+    Update User
+   </button>
+   <div class="dropdown-menu"
+       aria-labelledby="dropdownMenuButton">
+    {% for user in users %}
+    <a class="dropdown-item"
+       href="{{ url_for('updateUser', user_id=user.user_id) }}">
+        Update {{user.user_id}}
+    </a>
+    {% endfor %}
+   </div>
+ </div>
   <!-- Delete User Route links -->
   <div class="dropdown">
    <button class="btn btn-secondary dropdown-toggle"
@@ -34,5 +79,29 @@
     {% endfor %}
    </div>
  </div>
+ <!-- Generate Users Route links -->
+ <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle"
+         type="button"
+         id="dropdownMenuButton"
+         data-toggle="dropdown"
+         aria-haspopup="true"
+         aria-expanded="false">
+   Generate Users
+  </button>
+  <div class="dropdown-menu"
+      aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item"
+      href="{{ url_for('randomGenerateUsers', count=1) }}">
+       Generate 1 user
+  </a>
+   {%for i in range(2, 200)%}
+   <a class="dropdown-item"
+      href="{{ url_for('randomGenerateUsers', count=i) }}">
+       Generate {{i}} users
+   </a>
+   {% endfor %}
+  </div>
+</div>
 </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Update user:{{user.user_id}}</h1>
+<h1>Update user #{{user.user_id}}</h1>
 <form class="user-form" method="POST" action="/updateuser/{{user.user_id}}">
     {{ form.hidden_tag() }}
     <div class="user-form-group">
