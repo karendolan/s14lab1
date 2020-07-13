@@ -5,16 +5,15 @@
 from flask import Flask, render_template, request, redirect, url_for
 from models.user import db, User
 from modules.userform import UserForm
-# https://pypi.org/project/names/
+# Generate random first names
 import names
+# Generate random ages
 import random
 
 from flask_heroku import Heroku
 
 app = Flask(__name__)
 heroku = Heroku(app)
-#app = Flask(__name__)
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/usersdb'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://jmtzhzdmwytcvu:cab47fd3a7c281d058994c0682321ce0b613c1fc41078174f235e5e9a9f5efde@ec2-34-239-241-25.compute-1.amazonaws.com:5432/d4795eqpl9o1kb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "s14a-key"
