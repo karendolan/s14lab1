@@ -20,6 +20,7 @@ app.secret_key = "s14a-key"
 db.init_app(app)
 
 
+# @route / - GET, POST
 @app.route("/", methods=['GET', 'POST'])
 def index():
     # Query all
@@ -27,6 +28,17 @@ def index():
     # Iterate and print
     users.sort(key=lambda u: u.user_id)
     return render_template("index.html", users=users)
+
+
+# @route /getuser/<user_id> - GET
+@app.route("/getuser/<user_id>", methods=['GET'])
+def getUser(user_id):
+    # Query user
+    user = User.query.get_or_404(
+        user_id,
+        description='There is no User with user_id {}'.format(user_id)
+    )
+    return render_template("index.html", users=[user])
 
 
 # @route /adduser - GET, POST

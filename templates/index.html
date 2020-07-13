@@ -2,7 +2,7 @@
 {% block title %}Users{% endblock %}
 
 {% block content %}
-<h1>{{users|count}} Users</h1>
+<h1>{{users|count}} User(s)</h1>
 <div class="d-inline-flex mt-3">
   <!-- Add User Route -->
   <a class="btn btn-primary m-2"
@@ -50,14 +50,17 @@
 {% for user in users %}
   <tr>
     <th scope="row">{{user.user_id}}</th>
-    <td>{{user.first_name}}</td>
+    <td><a href="{{ url_for('getUser', user_id=user.user_id) }}">
+      {{user.first_name}}
+      </a>
+    </td>
     <td>{{user.age}}yrs</td>
     <td>
     <a class="btn btn-success btn-sm"
        href="{{ url_for('updateUser', user_id=user.user_id) }}">
-     <i class="fas fa-user-edit"></i> Update
+     <i class="fas fa-user-edit"></i> Edit
     </a>
-    <a class="btn btn-danger btn-sm"
+    <a class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"
        href="{{ url_for('removeUserFromUrl', user_id=user.user_id) }}">
      <i class="fas fa-trash"></i> Delete
    </a>
