@@ -132,3 +132,12 @@ def randomGenerateUsers(count):
         db.session.add(User(first_name=first_name, age=age))
         db.session.commit()
     return redirect(url_for('index'))
+
+
+# No caching at all for API endpoints.
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
