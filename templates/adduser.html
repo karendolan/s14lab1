@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Add user:</h1>
-<form class="user-form" method="POST" action="/adduser">
+<form class="user-form border border-primary p-3"
+      method="POST" action="/adduser">
     {{ form.hidden_tag() }}
     <div class="user-form-group">
         {{ form.first_name.label }}:

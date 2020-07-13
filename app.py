@@ -78,12 +78,10 @@ def updateUser(user_id):
         description='There is no User with user_id {}'.format(user_id)
     )
     form = UserForm()
-    form.age.data = user.age
-    form.first_name.data = user.first_name
     # If GET
     if request.method == 'GET':
-        #form.age = user.age
-        #form.first_name = user.first_name
+        form.age.data = user.age
+        form.first_name.data = user.first_name
         return render_template('updateuser.html', form=form, user=user)
     # If POST
     else:
