@@ -74,6 +74,17 @@ class Bars {
             .attr('class', 'label labelY')
             .style('transform', `rotate(-90deg) translate(-${vis.gH / 2}px, -30px)`)
             .text('Totals');
+
+
+        // Path hover text information
+        vis.xTextInfog = vis.g.append('g')
+            .attr('class', 'infoText')
+            .style('transform', `translate(20px,0)`);
+        vis.xTextInfo = vis.xTextInfog.append('text')
+            .attr('class', 'info infoX')
+            .text('');  //this is set on donut secgtion hover
+
+
         // Now wrangle
         vis.wrangle();
     }
@@ -90,11 +101,9 @@ class Bars {
 
         // Map ages
         const ageMap = vis.data.map(d => d.age);
-        // console.log('ageMap', ageMap);
 
-        // HIstograph
+        // Histograph
         vis.data_bins = vis.histogram(ageMap);
-        // console.log("Bins " + vis.data_bins);
 
         // Update scales
         vis.scX.domain(d3.extent(ageMap,d => d));
@@ -138,8 +147,15 @@ class Bars {
                              .attr('width', Math.floor(w * 0.8))
                              .attr('height', vis.gH - h)
                              .attr('x', Math.floor(w * 0.1))
-                             .attr('fill', 'rgba(0, 0, 255, 1)');
-
+                             .attr('fill', 'rgba(0, 0, 255, 1)')
+                             .on('mouseover', d => {
+                               d3.select(this).style('opacity', '0.5');
+                               vis.xTextInfo.text(`${d.length}`);
+                               vis.xTextInfog.style('transform', `translate(${w * i + 8}px, ${h - 10}px)`);
+                             })
+                             .on('mouseout', d => {
+                               d3.select(this).style('opacity', '1');
+                             })
                      })
              );
 

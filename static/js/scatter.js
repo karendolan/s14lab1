@@ -1,10 +1,10 @@
 /**
- * @class Bars
+ * @class Scatter
  */
-class Bars {
+class Scatter {
 
    // Variables
-   data_bins = [];
+   data_bin = [];
 
     // Elements
     svg = null;
@@ -15,7 +15,7 @@ class Bars {
     // Configs
     svgW = 360; // in px
     svgH = 360;
-    gMargin = {top: 0, right: 0, bottom: 0, left: 0};
+    gMargin = {top: 50, right: 50, bottom: 60, left: 80};
     gW = this.svgW - (this.gMargin.right + this.gMargin.left);
     gH = this.svgH - (this.gMargin.top + this.gMargin.bottom);
 
@@ -24,9 +24,10 @@ class Bars {
             .range([0, this.gW]);
     scY = d3.scaleLinear()
             .range([this.gH, 0]);
-    histogram = d3.histogram();
-    yAxis = d3.axisLeft().ticks(5);
+    scR = d3.scaleSqrt()
+             .range([1.5, 3]);
     xAxis = d3.axisBottom();
+    yAxis = d3.axisLeft().ticks(5);
 
 
     /*
@@ -66,14 +67,23 @@ class Bars {
         vis.xAxisG.append('text')
             .attr('class', 'label labelX')
             .style('transform', `translate(${vis.gW / 2}px, 40px)`)
-            .text('Age');
+            .text('Years of Experience');
         vis.yAxisG = vis.g.append('g')
             .attr('class', 'axis axisY')
-            .style('transform', 'translateX(-15px)');
+            .style('transform', `translateX(${-15}px)`);
         vis.yAxisG.append('text')
             .attr('class', 'label labelY')
             .style('transform', `rotate(-90deg) translate(-${vis.gH / 2}px, -30px)`)
-            .text('Totals');
+            .text('Homework Hours');
+
+        // Path hover text information
+        vis.xTextInfog = vis.g.append('g')
+            .attr('class', 'infoText')
+            .style('transform', `translate(20px,0)`);
+        vis.xTextInfo = vis.xTextInfog.append('text')
+            .attr('class', 'info infoX')
+            .text('');  //this is set on donut secgtion hover
+
         // Now wrangle
         vis.wrangle();
     }
@@ -88,18 +98,26 @@ class Bars {
         const vis = this;
         // console.log('Data', vis.data);
 
-        // Map ages
-        const ageMap = vis.data.map(d => d.age);
-        // console.log('ageMap', ageMap);
-
-        // HIstograph
-        vis.data_bins = vis.histogram(ageMap);
-        console.log("Bins " + vis.data_bins);
+        // "experience_yr": 7.0,
+        // "hw1_hrs": 5.0,
+        // Map years to hours
+        let yearsExpMap = [];
+        vis.data_bin = vis.data.map(d => {
+          return {
+            yrsExp : d.experience_yr,
+            hwHrs : d.hw1_hrs,
+            age : d.age
+          }
+        });
+        // console.log('data bin', vis.data_bin);
 
         // Update scales
-        vis.scX.domain(d3.extent(ageMap,d => d));
-        vis.scY.domain([0, d3.max(vis.data_bins,d => d.length)]);
-        vis.xAxis.scale(vis.scX).ticks(vis.data_bins.length);
+        vis.scX.domain(d3.extent(vis.data_bin,d => d.yrsExp));
+        vis.scY.domain([0, d3.max(vis.data_bin,d => d.hwHrs)]);
+        // Using Age for dot size scaler
+        vis.scR.domain(d3.extent(vis.data_bin,d => d.age));
+
+        vis.xAxis.scale(vis.scX);
         vis.yAxis.scale(vis.scY);
 
         // Now render
@@ -116,32 +134,34 @@ class Bars {
          const vis = this;
 
          // Build bars
-         vis.g.selectAll('.barG')
-             .data(vis.data_bins)
+         const dots = vis.g.selectAll('.dot')
+             .data(vis.data_bin)
              .join(
                  enter => enter
                      .append('g')
-                     .attr('class', 'barG')
+                     .attr('class', 'dot')
                      .each(function(d, i) {
                          // Define this
                          const g = d3.select(this);
 
-                         // Get dims
-                         const w = vis.gW / vis.data_bins.length;
-                         const h = vis.scY(d.length);
-
                          // Position
-                         g.style('transform', `translate(${i * w}px, ${h}px)`);
+                         const x = vis.scX(d.yrsExp);
+                         const y = vis.scY(d.hwHrs);
+                         // Position
+                         g.style('transform', `translate(${x}px, ${y}px)`);
+                         //console.log(x +" "+ y);
 
                          // Append rect
-                         g.append('rect')
-                             .attr('width', Math.floor(w * 0.8))
-                             .attr('height', vis.gH - h)
-                             .attr('x', Math.floor(w * 0.1))
-                             .attr('fill', 'rgba(0, 0, 128, 1)');
-
-                     })
-             );
+                         g.append('circle')
+                             .attr("r", vis.scR(d.age))
+                             .attr('fill', 'rgba(0, 0, 255, 1)')
+                             .attr('class', 'dot-circle')
+                             .on('mouseover', d => {
+                               vis.xTextInfo.text(`Age ${d.age}`);
+                               vis.xTextInfog.style('transform', `translate(${x}px, ${y}px)`);
+                             })
+                       })
+              );
 
          // Update axis
          vis.xAxisG.call(vis.xAxis);
