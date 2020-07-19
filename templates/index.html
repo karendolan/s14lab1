@@ -1,72 +1,23 @@
-{% extends "base.html" %}
-{% block title %}Users{% endblock %}
+{% extends "layout.html" %}
+
+{% block styles %}
+    <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bars.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
 
 {% block content %}
-<h1>{{users|count}} User(s)</h1>
-<div class="d-inline-flex mt-3">
-  <!-- Add User Route -->
-  <a class="btn btn-primary m-2"
-     href="{{ url_for('addUser') }}"
-     role="button">
-     <i class="fas fa-user-plus"></i>
-     Add User
-  </a>
- <!-- Generate Users Route links -->
- <div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle m-2"
-         type="button"
-         id="dropdownMenuButton"
-         data-toggle="dropdown"
-         aria-haspopup="true"
-         aria-expanded="false">
-   <i class="fas fa-users"></i>
-   Generate Users
-  </button>
-  <div class="dropdown-menu"
-      aria-labelledby="dropdownMenuButton">
-   <a class="dropdown-item"
-      href="{{ url_for('randomGenerateUsers', count=1) }}">
-       Generate 1 user
-  </a>
-   {%for i in range(2, 26)%}
-   <a class="dropdown-item"
-      href="{{ url_for('randomGenerateUsers', count=i) }}">
-       Generate {{i}} users
-   </a>
-   {% endfor %}
-  </div>
-</div>
-</div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Age</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-{% for user in users %}
-  <tr>
-    <th scope="row">{{user.user_id}}</th>
-    <td><a href="{{ url_for('getUser', user_id=user.user_id) }}">
-      {{user.first_name}}
-      </a>
-    </td>
-    <td>{{user.age}}yrs</td>
-    <td>
-    <a class="btn btn-success btn-sm"
-       href="{{ url_for('updateUser', user_id=user.user_id) }}">
-     <i class="fas fa-user-edit"></i> Edit
-    </a>
-    <a class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"
-       href="{{ url_for('removeUserFromUrl', user_id=user.user_id) }}">
-     <i class="fas fa-trash"></i> Delete
-   </a>
- </td>
-  </tr>
-{% endfor %}
-</tbody>
-</table>
+    <header>
+        <h1>D3 from the DB</h1>
+        <h2 id="users">Users: </h2>
+    </header>
+    <div class="slide">
+        <div id="vis1" class="vis"></div>
+        <div id="vis2" class="vis"></div>
+        <div id="vis3" class="vis"></div>
+    </div>
 {% endblock %}

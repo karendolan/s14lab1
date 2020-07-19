@@ -15,18 +15,18 @@ class Bars {
     // Configs
     svgW = 360; // in px
     svgH = 360;
-    gMargin = {top: 0, right: 0, bottom: 0, left: 0};
+    gMargin = {top: 50, right: 50, bottom: 60, left: 80};
     gW = this.svgW - (this.gMargin.right + this.gMargin.left);
     gH = this.svgH - (this.gMargin.top + this.gMargin.bottom);
 
     // Tools
+    histogram = d3.histogram();
     scX = d3.scaleLinear()
             .range([0, this.gW]);
     scY = d3.scaleLinear()
             .range([this.gH, 0]);
-    histogram = d3.histogram();
-    yAxis = d3.axisLeft().ticks(5);
     xAxis = d3.axisBottom();
+    yAxis = d3.axisLeft().ticks(5);
 
 
     /*
@@ -69,7 +69,7 @@ class Bars {
             .text('Age');
         vis.yAxisG = vis.g.append('g')
             .attr('class', 'axis axisY')
-            .style('transform', 'translateX(-15px)');
+            .style('transform', `translateX(${-15}px)`);
         vis.yAxisG.append('text')
             .attr('class', 'label labelY')
             .style('transform', `rotate(-90deg) translate(-${vis.gH / 2}px, -30px)`)
@@ -94,7 +94,7 @@ class Bars {
 
         // HIstograph
         vis.data_bins = vis.histogram(ageMap);
-        console.log("Bins " + vis.data_bins);
+        // console.log("Bins " + vis.data_bins);
 
         // Update scales
         vis.scX.domain(d3.extent(ageMap,d => d));
@@ -127,18 +127,18 @@ class Bars {
                          const g = d3.select(this);
 
                          // Get dims
-                         const w = vis.gW / vis.data_bins.length;
+                         const w = Math.round(vis.gW / vis.data_bins.length);
                          const h = vis.scY(d.length);
 
                          // Position
-                         g.style('transform', `translate(${i * w}px, ${h}px)`);
+                         g.style('transform', `translate(${w * i}px, ${h}px)`);
 
                          // Append rect
                          g.append('rect')
                              .attr('width', Math.floor(w * 0.8))
                              .attr('height', vis.gH - h)
                              .attr('x', Math.floor(w * 0.1))
-                             .attr('fill', 'rgba(0, 0, 128, 1)');
+                             .attr('fill', 'rgba(0, 0, 255, 1)');
 
                      })
              );
