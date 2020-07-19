@@ -1,16 +1,18 @@
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 from flask import Flask, render_template, jsonify
 from flask_heroku import Heroku
 from models.homeworkuser import Db, HomeworkUser
 from os import environ
 
-load_dotenv('.env')
+#load_dotenv('.env') # Can't get this working on Heroku
 
 app = Flask(__name__)
 heroku = Heroku(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/homework_users_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = environ.get('SECRET_KEY')
+app.secret_key = "s14a-key"
+# Can't get the env key working on Heroku
+#app.secret_key = environ.get('SECRET_KEY')
 Db.init_app(app)
 
 
