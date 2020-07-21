@@ -56,3 +56,11 @@ h1 {
     fill: black;
     font-size: 18px;
 }
+
+.arc:hover {
+    fill-opacity: 0.5;
+}
+
+.dot-circle:hover {
+  fill: rgba(255, 0, 0, 1);
+}
