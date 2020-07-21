@@ -1,4 +1,3 @@
-/* HW4 modified CSS */
 
 * {
     border: 0;
@@ -7,53 +6,25 @@
     margin: 0;
 }
 
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 2em;
-}
-
-html {
-  background-color: grey;
-}
-
 h1 {
-    background-color: orangered;
-    color: white;
+    border-bottom: 3px solid orangered;
     display: inline-flex;
     font-family: sans-serif;
     font-size: 20px;
     font-weight: lighter;
-    margin: auto;
-    padding: 1.5em;
-    width: 100%;
+    margin: 10px;
+    padding: 0 0 3px 0;
 }
 
 #posts {
     margin: 25px 0 0 0;
 }
 
-.author {
-   background-color: green;
-   color: white;
-   display: inline-block;
-   padding: 1.1em;
-}
-
-.date {
-  background-color: yellow;
-  color: grey;
-}
-
 p {
     font-family: sans-serif;
     font-size: 15px;
     font-weight: lighter;
-    margin: 0;
-}
-
-.row {
-  border-bottom: 1px solid black;
+    margin: 5px 20px;
 }
 
 #forms {
@@ -64,7 +35,7 @@ form {
     margin: 10px 20px;
 }
 
-.buttonnnn {
+button {
     background-color: darkblue;
     border-radius: 5px;
     color: white;
@@ -74,29 +45,29 @@ form {
     min-width: 100px;
 }
 
-.form-grouppp {
+.form-group {
     margin: 10px;
 }
 
-.form-grouppp label {
+.form-group label {
     font-family: sans-serif;
     font-size: 15px;
     font-weight: lighter;
 }
 
-.form-grouppp input {
+.form-group input {
     border-bottom: 3px solid darkblue;
     margin: 0 0 0 3px;
     padding: 3px;
 }
 
-.form-grouppp textarea {
+.form-group textarea {
     border: 3px solid darkblue;
     margin: 10px 0 0 1px;
     padding: 3px;
 }
 
-.form-submittt {
+.form-submit {
     background-color: darkblue;
     border-radius: 5px;
     color: white;
@@ -114,8 +85,4 @@ form {
     font-size: 15px;
     font-weight: normal;
     margin: 5px;
-}
-
-.flashes {
-  list-style-type: none;
 }

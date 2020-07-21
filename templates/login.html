@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+    <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block content %}
+
+    <h1>Login form</h1>
+
+    <form method="POST" action="/login" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+
+            {{ form.username.label }}<br>
+            {{ form.username(size=32, class="form-control", placeholder="Enter username") }}<br>
+            {% for error in form.username.errors %}
+                <span class="form-error-message">[{{ error }}]</span>
+
+            {% endfor %}
+
+
+            {{ form.password.label }}<br>
+            {{ form.password(size=32, class="form-control", placeholder="Enter password") }}<br>
+            {% for error in form.password.errors %}
+                <span class="form-error-message">[{{ error }}]</span>
+
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="form-submit btn btn-primary") }}
+
+    </form>
+
+    <p>New User? <a href="{{ url_for('signup') }}" class="btn btn-primary">Click to Register!</a></p>
+
+{% endblock %}

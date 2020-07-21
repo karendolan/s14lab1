@@ -5,21 +5,54 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="{{ url_for('static', filename='js/bars.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/donut.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/scatter.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-    <header>
-        <h1>D3 from the DB</h1>
-        <h2 id="users">Users: </h2>
-    </header>
-    <div class="slide">
-        <div id="vis1" class="vis"></div>
-        <div id="vis2" class="vis"></div>
-        <div id="vis3" class="vis"></div>
+
+    {% if session_username is defined %}
+
+        <h1>Hi, {{ session_username }} !</h1>
+
+    {% else %}
+
+        <h1>Hi, guest!</h1>
+
+    {% endif %}
+
+    <div id="posts" class="container">
+        {% for p in posts %}
+            <div class="row">
+              <div class="author col-sm">
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                {{ p.User.username }}
+              </div>
+              <div class="col-6">
+                {{ p.Post.content }}
+              </div>
+              <span class="date col-sm">{{ p.Post.created_date }}</span>
+            </div>
+        {% endfor %}
     </div>
+
+
+    <div id="forms" class="btn-group" role="group" aria-label="Options">
+        {% if session_username is defined %}
+            <form action="/logout" method="POST">
+                <button type="submit" class="btn btn-primary"> Log out</button>
+            </form>
+
+            <form action="/newpost" method="GET">
+                <button type="submit" class="btn btn-primary"> New Post</button>
+            </form>
+
+        {% else %}
+            <form action="/login" method="GET">
+                <button type="submit" class="btn btn-primary"> Log in</button>
+            </form>
+            <form action="/signup" method="GET">
+                <button type="submit" class="btn btn-primary"> Sign up</button>
+            </form>
+        {% endif %}
+    </div>
+
 {% endblock %}
