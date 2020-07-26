@@ -10,7 +10,7 @@ from passlib.hash import sha256_crypt
 
 load_dotenv('.env')
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='')
 heroku = Heroku(app)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/lab5'
