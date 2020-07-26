@@ -37,19 +37,23 @@
     <div id="forms" class="btn-group" role="group" aria-label="Options">
         {% if session_username is defined %}
             <form action="/logout" method="POST">
-                <button type="submit" class="btn btn-primary"> Log out</button>
+                <a href="{{ url_for('logout') }}" class="btn btn-primary">Log out</a>
+                <!-- button type="submit" class="btn btn-primary"> Log out</button -->
             </form>
 
             <form action="/newpost" method="GET">
-                <button type="submit" class="btn btn-primary"> New Post</button>
+                <a href="{{ url_for('newpost') }}" class="btn btn-primary">New Post</a>
+                <!-- button type="submit" class="btn btn-primary"> New Post</button -->
             </form>
 
         {% else %}
             <form action="/login" method="GET">
-                <button type="submit" class="btn btn-primary"> Log in</button>
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Log in</a>
+                <!-- button type="submit" class="btn btn-primary"> Log in</button -->
             </form>
             <form action="/signup" method="GET">
-                <button type="submit" class="btn btn-primary"> Sign up</button>
+                <a href="{{ url_for('signup') }}" class="btn btn-primary">Sign up</a>
+                <!-- button type="submit" class="btn btn-primary"> Sign up</button -->
             </form>
         {% endif %}
     </div>
