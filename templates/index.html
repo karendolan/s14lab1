@@ -43,8 +43,7 @@
     <div id="forms" class="btn-group" role="group" aria-label="Options">
         {% if session_username is defined %}
             <form action="/logout" method="POST">
-                <a href="{{ url_for('logout') }}" class="btn btn-primary">Log out</a>
-                <!-- button type="submit" class="btn btn-primary"> Log out</button -->
+                <button type="submit" class="btn btn-primary"> Log out</button>
             </form>
 
             <form action="/newpost" method="GET">
