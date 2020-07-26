@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /static/
+
+Sitemap: https://serene-spire-59997.herokuapp.com
+
