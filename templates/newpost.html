@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    <title>Add a new post to the Comment maker community</title>
+{% endblock %}
+
 {% block styles %}
     <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet">
 {% endblock %}
@@ -9,7 +13,7 @@
 
 {% block content %}
 
-    <h1>New Post</h1>
+    <h1>Add a new post to the comment posting community</h1>
 
     <form method="POST" action="/newpost" novalidate>
         {{ form.hidden_tag() }}

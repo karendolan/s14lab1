@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 
+{% block title %}
+    <title>Log into the Comment maker community</title>
+{% endblock %}
 {% block styles %}
     <link href="{{ url_for('static', filename='./css/index.css') }}" rel="stylesheet">
 {% endblock %}
@@ -9,7 +12,7 @@
 
 {% block content %}
 
-    <h1>Login form</h1>
+    <h1>Log into the comment posting community</h1>
 
     <form method="POST" action="/login" novalidate>
         {{ form.hidden_tag() }}
