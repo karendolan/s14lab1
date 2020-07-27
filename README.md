@@ -7,7 +7,8 @@ Tasks
     + Replace 'Author number' with real name.
     + Implement [dates](https://docs.sqlalchemy.org/en/13/core/type_basics.html) in your models
     + Test the performance of your app (submit one page report as markdown file):
-        + If you can deploy your app to Heroku, check performance and identify bottlenecks: https://developers.google.com/speed/pagespeed/insights/.Add a page with a description of your project. Identify keywords that your projects should be found on the Google search. Do the Search Engine Optimization (SEO). Check the results at:
+        + If you can deploy your app to Heroku, check performance and identify bottlenecks: https://developers.google.com/speed/pagespeed/insights/.
+        Add a page with a description of your project. Identify keywords that your projects should be found on the Google search. Do the Search Engine Optimization (SEO). Check the results at:
             - https://www.seobility.net/en/seocheck/
             - https://neilpatel.com/seo-analyzer/
             - https://www.seotesteronline.com/
