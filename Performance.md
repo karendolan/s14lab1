@@ -1,7 +1,7 @@
 # Performance of Community Posts Project
 
 ##The Project
-**HW4-lab5 s14a-2020 Karen Dolan**
+**HW4-lab5 s14a-2020 Karen Dolan:** [Community Post Project (HW4-lab5)](https://serene-spire-59997.herokuapp.com/)
 
 The comment posting project displays community comments and the option for new users to register to post. 
 Keywords: post, comment, community
